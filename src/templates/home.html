@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel='stylesheet' href='/static/bootstrap/css/bootstrap.min.css'>
+    <link rel="icon" href="/static/images/compress.png" type="image/x-icon"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel</title>
+    <style>
+       body {
+    background-image: url("/static/images/navy.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    color: aliceblue !important;
+}
+
+nav{
+    color: aliceblue !important;
+}
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <div class="wrapper flex-grow-1">
+        <div class="container">
+            <header>
+                <nav class="navbar navbar-expand-xl navbar-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" style="color: aliceblue;" href="{{ url_for('home') }}">
+                            <img src="/static/images/compress.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
+                            Pixel</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarText">
+                            <ul class="navbar-nav ms-auto text-center">
+                                <li class="nav-item">
+                                <a class="nav-link active" style="color: aliceblue;" aria-current="page" href="{{ url_for('home') }}">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                <a class="nav-link" style="color: aliceblue;" href="{{ url_for('howtouse') }}"> Use</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <br><br> <br>
+            <content>
+                <div class="d-grid gap-5">
+                    <div class="row"></div>
+                    <div class="row">
+                        {% if filename %}
+                        <div class="container d-grid gap-3">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>Before</h2>
+                                </div>
+                                <div class="col">
+                                    <h2>After</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-center">
+                                    <img src="{{ url_for('display_org', filename=filename) }}" class="img-fluid" alt="">
+                                </div>
+
+                                <div class="col text-center">
+                                    <img src="{{ url_for('display_comp', filename=filename) }}" class="img-fluid" alt="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="text-start">
+                                        Data percentage: <b>{{ cprate }}%</b>
+                                        <br>Compression runtime: <b>{{ runtime }} seconds</b>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="text-end">
+                                        <a href="{{ url_for('display_comp', filename=filename) }}" download="proposed_file_name" type="button" class="btn btn-dark">Download</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h2>Happy with your result?</h2>
+                                <a href="{{ url_for('home') }}" type="button" class="btn btn-dark">Compress another image!</a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-4">
+                                    <a href="{{ url_for('home') }}"><img src="/static/images/comp.png" class="img-fluid" alt=""></a>
+                                </div>
+                                <div class="col-lg-5 my-auto d-grid gap-2">
+                                    <div class="">
+                                        <h1 >Hello! Welcome to Pixel!</h1>
+                                    </div>
+                        
+                                        {% with messages = get_flashed_messages() %}
+                                        {% if messages %}
+                                            <ul>
+                                            {% for message in messages %}
+                                            <li>{{ message }}</li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                        {% endwith %}
+                        
+                                    <form method="post" action="/" enctype="multipart/form-data">
+                                        <div class="d-grid gap-2">
+                                            <div class="input-group">
+                                                <input type="file" name="file" class="form-control" id="inputGroupFile02" autocomplete="off" required>
+                                                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                                            </div>
+                        
+                                            <div class="input-group">
+                                                <span class="input-group-text">Image Compression Rate (0-100)</span>
+                                                <input type="number" name="comp-rate" class="form-control" autocomplete="off" required min="0" max="100" step="1">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                            <input class="btn btn-dark" type="submit" value="Compress">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row"></div>
+                </div>
+            </content>
+
+        </div>
+       
+    </div>
+
+
+
+    <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
